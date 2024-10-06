@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, ImageBackground, Image, Animated, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, Animated, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native'
 import React, { useEffect, useRef} from 'react'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 
+const { height, width } = Dimensions.get('window');
 
 const WelcomeScreen = () => {
   const bounceValue = useRef(new Animated.Value(0)).current;
@@ -39,8 +40,8 @@ const WelcomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={require ('../images/blue-gradient.jpg')} style={styles.background}>
+    <SafeAreaView style={styles.container}>
+      <ImageBackground source={require ('../images/homeBG.jpg')} style={styles.background}>
         <Image source={require ('../images/echoease-light.png')} style={styles.logo}/>
         {/*<Image source={require('../images/echoBot.gif')} style={styles.echoBot}/>*/}
         <Animated.Image
@@ -58,7 +59,7 @@ const WelcomeScreen = () => {
       
      </ImageBackground>
      
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         height: "100%",
     },
     logo:{
-        height: 50,
+        height: height * 0.06,
         width: 'auto',
         resizeMode: 'contain',
         marginVertical: 100,
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderColor: 'dodgerblue',
       width: "90%",
-      height: 60,
+      height: height * 0.07,
       borderRadius: 100,
       alignSelf: 'center', 
     
@@ -115,14 +116,14 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: "center",
       fontSize: 20,
-      fontWeight: '800',
-      
-      
+      fontWeight: '800',           
     },
     signUpBtn:{
       justifyContent: 'center',
       alignItems: "center",
       fontSize: 20,
       fontWeight: '800',
-    }
+    },
+    
+
 })

@@ -1,24 +1,96 @@
-import { StyleSheet, Text, View, TextInput, Image, SafeAreaView, Dimensions} from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, SafeAreaView, Dimensions, ActivityIndicator} from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+// import { useLoginMutation } from '../../redux/services/apiSlice'
+import { useLoginMutation } from '../../redux/features/authApiSlice'
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import storeToken from '../../utils/storeToken'
+import Toast from 'react-native-toast-message'
+
 
 
 const { height, width } = Dimensions.get('window');
 
+
+
+
+
 const LoginScreen = () => {
 
+  const [secureEntry, setSecureEntry] = useState(true);
+
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const [login, {data, isSuccess, isError, isLoading}] = useLoginMutation();
   const navigation = useNavigation();
   const handleBack = () => {
     navigation.navigate("Welcome");
   };
-  const handleLogin = () => {
-    navigation.navigate("Home");
+  const handleLogin = async() => {
+
+    if (!email){
+      Toast.show({
+        text1: 'Email Required',
+        text2: 'Please enter your email address',
+        type: 'error',
+      });
+      return;
+    }
+
+    if (!pass) {
+      Toast.show({
+        text1: 'Password Required',
+        text2: 'Please enter your password',
+        type: 'error',
+      });
+      return;
+    }
+    try{
+      const data = await login({email: email, password: pass}).unwrap();
+        storeToken(data.access, data.refresh);
+        Toast.show({
+          text1: 'Logged in successfully!',
+          type: 'success',
+          visibilityTime: 1000,
+        })
+        navigation.navigate("Home");
+
+    }catch(error){
+      Toast.show({
+        text1: 'Invalid',
+        text2: 'Invalid Email or Password',
+        type: 'error',
+      });
+    }
+    // const data = await login({email: email, password: pass}).unwrap().then(()=>{
+    //   Toast.show({
+    //     text1: 'Logged in successfully!',
+    //     type: 'success',
+    //     visibilityTime: 1000,
+    //   })
+    //   navigation.navigate("Home");
+    // }).catch(()=>{ 
+    //   Toast.show({
+    //   text1: 'Invalid',
+    //   text2: 'Invalid Email or Password',
+    //   type: 'error',
+    // });
+    
+  // });
+    
+    // storeToken(data.access, data.refresh);
   };
 
-  const [secureEntry, setSecureEntry] = useState(true);
+  
+
+ 
+ 
+
+ 
 
   return (
     <SafeAreaView style={styles.container}> 
@@ -28,11 +100,20 @@ const LoginScreen = () => {
         <Text style={styles.welcome}>Welcome Back!</Text>
       <View style={styles.emailWrapper}>
         <Ionicons name='mail' size={25} style={styles.emailIcon}/>
-        <TextInput style={styles.emailTxt} placeholder='Enter your email' keyboardType='email-address'></TextInput>
+        <TextInput 
+        style={styles.emailTxt} 
+        placeholder='Enter your email' 
+        keyboardType='email-address' 
+        value={email} 
+        onChangeText={setEmail}></TextInput>
       </View>
       <View style={styles.emailWrapper}>
         <MaterialCommunityIcons name='onepassword' size={25} style={styles.emailIcon}/>
-          <TextInput style={styles.passTxt} placeholder='Enter your password' secureTextEntry={secureEntry}></TextInput>
+          <TextInput style={styles.passTxt} 
+          placeholder='Enter your password' 
+          secureTextEntry={secureEntry} 
+          value={pass} 
+          onChangeText={setPass}></TextInput>
         <TouchableOpacity 
         onPress={() => {
           setSecureEntry((prev) => !prev);
@@ -46,7 +127,11 @@ const LoginScreen = () => {
           <Text style={styles.forgotPass}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-          <Text style={styles.loginTxt}>Login</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#ffffff"/>
+          ) : (
+            <Text style={styles.loginTxt}>Login</Text>
+          )} 
         </TouchableOpacity>
         <Text style={styles.centerTxt}>or continue with</Text>   
         <TouchableOpacity style={styles.googleWrapper}>

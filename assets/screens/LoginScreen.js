@@ -9,6 +9,7 @@ import { useLoginMutation } from '../../redux/features/authApiSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import storeToken from '../../utils/storeToken'
 import Toast from 'react-native-toast-message'
+import ForgotPassword from './ForgotPassword'
 
 
 
@@ -85,6 +86,10 @@ const LoginScreen = () => {
     // storeToken(data.access, data.refresh);
   };
 
+  const forgotPassword = () => {
+    navigation.navigate("ForgotPassword");
+  };
+
   
 
  
@@ -105,7 +110,8 @@ const LoginScreen = () => {
         placeholder='Enter your email' 
         keyboardType='email-address' 
         value={email} 
-        onChangeText={setEmail}></TextInput>
+        onChangeText={setEmail}
+          ></TextInput>
       </View>
       <View style={styles.emailWrapper}>
         <MaterialCommunityIcons name='onepassword' size={25} style={styles.emailIcon}/>
@@ -123,7 +129,7 @@ const LoginScreen = () => {
         <Image source={require('../images/echoease-logo.png')} style={styles.logo}/>    
       </View>
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={forgotPassword}>
           <Text style={styles.forgotPass}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>

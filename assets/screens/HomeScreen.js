@@ -36,7 +36,23 @@ const HomeScreen = () => {
     if (label === 'Profile') {
       navigation.navigate('Profile');
     }
+    if (label === 'Bookings') {
+      navigation.navigate('Bookings');
+    }
+    if (label === 'Messages') {
+      navigation.navigate('Messaging');
+    }
+    if (label === 'Transactions') {
+      navigation.navigate('Transactions');
+    }
+    if (label === 'Echoee') {
+      navigation.navigate('Echoees');
+    }
   };
+
+  const gotoNotifs = () => {
+    navigation.navigate('Notifications');
+  }
   
   return (
     <View style={styles.container}>
@@ -51,7 +67,7 @@ const HomeScreen = () => {
             <TouchableOpacity>
               <Ionicons name="search" size={24} color="black" style={styles.icon} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={gotoNotifs}>
               <Ionicons name="notifications" size={24} color="black" style={styles.icon} />
             </TouchableOpacity>
           </View>

@@ -11,6 +11,12 @@ import { ApiProvider } from '@reduxjs/toolkit/query/react';
 import { store } from './redux/store';
 import Toast from 'react-native-toast-message';
 import Profile from './assets/screens/Profile';
+import ForgotPassword from './assets/screens/ForgotPassword';
+import Bookings from './assets/screens/Bookings';
+import Messaging from './assets/screens/Messaging';
+import Transactions from './assets/screens/Transactions';
+import Notifications from './assets/screens/Notifications';
+import Echoees from './assets/screens/Echoees';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +33,12 @@ const App = () => {
           <Stack.Screen name="Login" component={LoginScreen}/>
           <Stack.Screen name="Home" component={HomeScreen}/>
           <Stack.Screen name="Profile" component={Profile}/>
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
+          <Stack.Screen name="Bookings" component={Bookings}/>
+          <Stack.Screen name="Messaging" component={Messaging}/>
+          <Stack.Screen name="Transactions" component={Transactions}/>
+          <Stack.Screen name="Notifications" component={Notifications}/>
+          <Stack.Screen name="Echoees" component={Echoees}/>
         </Stack.Navigator>
       </NavigationContainer>
       <Toast ref={(ref) => Toast.setRef(ref)} />

@@ -20,10 +20,18 @@ const authApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ["CurrentUser"]
-        })
+        }),
+        updateProfile: builder.mutation({
+            query: (data) => ({
+                url: `/whoami/`,
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ["CurrentUser"]
+        }),
     })
 })
 
-export const {useLoginMutation, useGetUserQuery, useUploadImageMutation} = authApiSlice;
+export const {useLoginMutation, useGetUserQuery, useUploadImageMutation, useUpdateProfileMutation} = authApiSlice;
 
 export default authApiSlice;
